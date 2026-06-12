@@ -1,0 +1,48 @@
+.Container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,-50%);
+    border: 5px solid black;
+    border-radius: 5px;
+    height: 40vh;
+    width: 40vw;
+    background-image: linear-gradient(blue,white);
+}
+
+.LocalContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    position: absolute;
+    left: 20%;
+    bottom: 0;
+    transform: translate(-50%,-50%);
+    border: 5px solid black;
+    border-radius: 5px;
+    height: 40vh;
+    width: 40vw;
+    background-image: linear-gradient(blue,white);
+}
+
+
+.RemoteContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    position: absolute;
+    right: -20%;
+    bottom: 0;
+    transform: translate(-50%,-50%);
+    border: 5px solid black;
+    border-radius: 5px;
+    height: 40vh;
+    width: 40vw;
+    background-image: linear-gradient(blue,white);
+}
