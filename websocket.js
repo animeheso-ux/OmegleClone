@@ -8,6 +8,7 @@ export let group_calls = new Map()
 
 
 
+
 export default function SocketSetup(server) {
 
     const socketserver = new WebSocketServer({ server })
@@ -48,9 +49,9 @@ export default function SocketSetup(server) {
                     if (Data.call_type == "single") {
                         if (!single_calls.has(ws)) {
                             single_calls.set(ws,
-                                { id: User_List.get(ws).id, socket: ws }
+                                { id: User_List.get(ws).id, socket: ws , busy : User_List.get(ws).busy }
                             )
-                            const getUsers =  [...single_calls.values()]
+                            const getUsers =  [...single_calls.values()].filter(user => user["busy"] !== true)
                             
                             getUsers.map((user) => {
                                 user["socket"].send(JSON.stringify({ type: "getPeers", otherPeers: getUsers, id : user["id"]}))
@@ -75,10 +76,11 @@ export default function SocketSetup(server) {
             }
 
             if (Data.type == "sendOffer") {
-                console.log(Data.target)
-                const targetUser = [...User_List.values()].find(user => user["id"] == Data.target)
 
-                if (targetUser["busy"] !== true) {
+                const targetUser = [...User_List.values()].find(user => user["id"] == Data.target)
+                
+                if (targetUser) {
+                    single_calls.get(targetUser["socket"]).busy = true
                     targetUser["socket"].send(JSON.stringify({ type: "receiveOffer", offer: Data.offer, sender: Data.sender }))
                 }
             }
@@ -86,8 +88,7 @@ export default function SocketSetup(server) {
             if (Data.type == "sendAnswer") {
                 const targetUser = [...User_List.values()].find(user => user["id"] == Data.target)
 
-                if (targetUser["busy"] !== true) {
-                    targetUser["busy"] = true
+                if (targetUser) {
                     targetUser["socket"].send(JSON.stringify({ type: "receiveAnswer",answer : Data.answer, sender: Data.sender }))
                 }
             }

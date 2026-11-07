@@ -10,6 +10,7 @@ export default function VideoCall() {
 
     const localVideoREF = useRef(null)
     const peerListREF = useRef([])
+    const BufferingOffersREF = useRef(new Map())
     const idREF = useRef("")
 
     function getPeers() {
@@ -54,7 +55,9 @@ export default function VideoCall() {
 
             if (Data.type == "getPeers") {
                 const PeerArray = []
-                const otherPeers = Data.otherPeers.filter(user => user["id"] !== idREF.current && user["busy"] !== true)
+                const otherPeers = Data.otherPeers.filter(user => user["id"] !== idREF.current)
+
+                console.log(otherPeers)
 
                 const devices = await navigator.mediaDevices.enumerateDevices()
                 const camera = devices.filter(device => device.kind == "videoinput" && device.label == "Integrated Camera (30c9:00ac)")
@@ -143,9 +146,10 @@ export default function VideoCall() {
             if (Data.type == "receiveOffer") {
                 console.log(Data.sender)
                 const sendersPeer = peerListREF.current.find(peer => peer["id"] == Data.sender)
-                console.log(sendersPeer)
 
                 if (sendersPeer) {
+
+
                     await sendersPeer["peerObject"].setRemoteDescription(Data.offer)
                     const answer = await sendersPeer["peerObject"].createAnswer()
                     await sendersPeer["peerObject"].setLocalDescription(answer)
@@ -175,7 +179,7 @@ export default function VideoCall() {
                 <>
                     <video ref={localVideoREF} autoPlay playsInline muted></video>
                     {remoteStreams.map((stream, index) => (
-                        <video
+                        <video key={index}
                             autoPlay
                             playsInline
                             ref={(video) => {
