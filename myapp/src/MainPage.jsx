@@ -1,8 +1,10 @@
 import './App.css'
 import './MainPage.css'
+import { useNavigate } from 'react-router'
 
 
-function MainPage({toVideoPage}) {
+function MainPage() {
+    const navigate = useNavigate()
     return (
         <div>
 
@@ -12,7 +14,7 @@ function MainPage({toVideoPage}) {
 
 
             <div className='Container'>
-                <button onClick={toVideoPage}>Join</button>
+                <button onClick={() => navigate("/VideoCall")}>Join</button>
             </div>
         </div>
     )

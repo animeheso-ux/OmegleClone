@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import MainPage from './MainPage.jsx'
 import VideoCall from './VideoCall.jsx'
+import { Routes , Route } from 'react-router'
 
 function App() {
   const [page,setpage] = useState("MainPage")
@@ -9,8 +10,13 @@ function App() {
   return (
     <div>
 
-      {page === "MainPage" && (<MainPage toVideoPage={()=> setpage("VideoCall")}/>)}
-      {page === "VideoCall" && (<VideoCall toMainPage={() => setpage("MainPage")}/>)}
+      <Routes>
+        <Route path={"/"} element={<MainPage/>}></Route>
+        <Route path={"/VideoCall"} element={<VideoCall/>}></Route>
+      </Routes>
+
+      
+
     </div>
   )
 }

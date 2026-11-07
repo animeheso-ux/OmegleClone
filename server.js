@@ -7,7 +7,6 @@ import path from "path"
 import { fileURLToPath } from "node:url"
 
 import SocketSetup from "./websocket.js"
-import {SelectUserToCall}  from "./websocket.js"
 
 
 
@@ -28,14 +27,6 @@ const __dirname = path.dirname(__filename)
 app.use(exp.json())
 app.use(exp.static(path.join(__dirname,"myapp/dist")))
 
-
-app.post("/GetRandomUser",(req,res)=> {
-    const {peer_id} = req.body
-
-    const randomuser = SelectUserToCall(peer_id)
-
-    res.json({id : randomuser})
-})
 
 
 
@@ -58,7 +49,7 @@ exec("cd myapp && npm run build",(err)=> {
 
 
 
-server.listen(PORT,()=> console.log("localhost"),exec(`start http://localhost:${PORT}`))
+server.listen(PORT,()=> console.log("http://localhost:3000"))
 
 
 
